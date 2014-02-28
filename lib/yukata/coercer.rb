@@ -2,7 +2,7 @@ module Yukata
   class Coercer
     def initialize
       @coercions = Hash.new do |hash, key|
-        hash[key] = Hash.new { -> (object) { object } }
+        hash[key] = Hash.new { -> (object, type) { object } }
       end
       @mutex = Mutex.new
     end
@@ -31,7 +31,9 @@ module Yukata
     # @param target [Class] what you want the object to turn in to
     def coerce(object, target)
       @mutex.synchronize do
-        @coercions[object.class][target].call(object)
+        coercions = @coercions[object.class]
+        key = coercions.keys.find { |k, _| k.ancestors.include?(target) }
+        coercions[key].call(object, key)
       end
     end
   end

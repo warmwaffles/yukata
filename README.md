@@ -25,11 +25,35 @@ book = Book.new({
   }
 })
 
-puts '=================================='
+pp book
+```
 
-pp book.to_h
+## Creating A Coercion
 
-puts '=================================='
+This library comes with a custom coercion library. It's fairly straight forward.
+
+```ruby
+Yukata.coercer.register(String, URI) do |string, type|
+  #
+  # Maybe do some fancy string cleanup before you coerce it
+  #
+  URI(string)
+end
+```
+
+Then require that coercion to make sure it's loaded and all you simply have to
+do now is just do the following.
+
+```ruby
+require 'pp'
+
+class Website < Yukata::Base
+  attribute :uri, URI
+end
+
+website = Website.new({uri: 'http://example.com'})
+
+pp website
 ```
 
 ## Contributing

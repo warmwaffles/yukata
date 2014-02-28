@@ -8,7 +8,7 @@ module Yukata
     # @param type [Class] the class this attribute represents
     # @param options [Hash] extra options that can be prescribed
     def initialize(type=String, options={})
-      @type    = type
+      @type = type
       if options[:default].is_a?(Proc)
         @default = options[:default]
       else

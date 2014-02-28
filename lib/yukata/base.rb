@@ -61,7 +61,7 @@ module Yukata
         val
       end
 
-      Yukata.coercer.register(Hash, self) { |obj, type| type.new(obj) }
+      Yukata.coercer.register(Hash, public_constant) { |obj, klass| klass.new(obj) }
     end
   end
 end
