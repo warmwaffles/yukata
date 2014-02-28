@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Yukata::VERSION
   spec.authors       = ['Matthew Johnston']
   spec.email         = ['warmwaffles@gmail.com']
-  spec.description   = %q{A light weight key value object storage system}
-  spec.summary       = %q{A light weight key value object storage system}
+  spec.description   = %q{Attributes for ruby objects}
+  spec.summary       = %q{Attributes for ruby objects}
   spec.homepage      = ''
   spec.license       = 'MIT'
 
@@ -17,11 +17,6 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
-
-  spec.add_dependency('redis')
-  spec.add_dependency('dalli')
-  spec.add_dependency('virtus', '~> 1.0')
-  spec.add_dependency('connection_pool', '~> 1.2')
 
   spec.add_development_dependency('bundler', '~> 1.3')
   spec.add_development_dependency('rspec')

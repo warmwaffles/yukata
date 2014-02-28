@@ -1,6 +1,6 @@
 # Yukata
 
-A light weight object mapper for key value storage
+A light weight, no dependency, plain old ruby objects on steroids.
 
 ## Contributing
 
