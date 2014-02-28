@@ -1,4 +1,8 @@
 module Yukata
+  # The class that coerces objects based on the definitions that are registered
+  # with it.
+  #
+  # @author Matthew A. Johnston
   class Coercer
     def initialize
       @coercions = Hash.new do |hash, origin|
@@ -34,7 +38,9 @@ module Yukata
     # @param object [Object] the object to coerce
     # @param target [Class] what you want the object to turn in to
     def coerce(object, target)
-      @coercions[object.class][target].call(object)
+      @mutex.synchronize do
+        @coercions[object.class][target].call(object)
+      end
     end
   end
 end
