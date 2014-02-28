@@ -45,23 +45,20 @@ module Yukata
       self.attributes[name] = attr
       variable = "@#{name}"
 
-      # SETTER
-      setter = "#{name}="
-      define_method(setter) do |arg|
-        instance_variable_set(variable, attr.coerce(arg))
+      define_method("#{name}=") do |object|
+        val = Yukata.coercer.coerce(object, attr.type)
+        instance_variable_set(variable, val)
       end
 
-      # GETTER
       define_method(name) do
         val = instance_variable_get(variable)
-        unless val # Need to set the default
+        unless val
           val = attr.default
           instance_variable_set(variable, val)
         end
         val
       end
 
-      Yukata.coercer.register(Hash, public_constant) { |obj, klass| klass.new(obj) }
     end
   end
 end

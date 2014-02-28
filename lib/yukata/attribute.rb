@@ -9,6 +9,7 @@ module Yukata
     # @param options [Hash] extra options that can be prescribed
     def initialize(type=String, options={})
       @type = type
+
       if options[:default].is_a?(Proc)
         @default = options[:default]
       else
@@ -18,11 +19,6 @@ module Yukata
 
     def default
       @default.call
-    end
-
-    def coerce(obj)
-      return obj if obj.is_a?(type)
-      Yukata.coercer.coerce(obj, type)
     end
   end
 end

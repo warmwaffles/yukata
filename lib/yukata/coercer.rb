@@ -1,8 +1,10 @@
 module Yukata
   class Coercer
     def initialize
-      @coercions = Hash.new do |hash, key|
-        hash[key] = Hash.new { -> (object, type) { object } }
+      @coercions = Hash.new do |hash, origin|
+        hash[origin] = Hash.new do |h, target|
+          h[target] = Coercion.new(origin, target)
+        end
       end
       @mutex = Mutex.new
     end
@@ -12,8 +14,10 @@ module Yukata
     # @param origin [Class] the class to convert
     # @param target [Class] what the origin will be converted to
     def register(origin, target, &block)
+      raise(ArgumentError, 'block is required') unless block_given?
+
       @mutex.synchronize do
-        @coercions[origin][target] = block
+        @coercions[origin][target] = Coercion.new(origin, target, &block)
       end
     end
 
@@ -30,11 +34,7 @@ module Yukata
     # @param object [Object] the object to coerce
     # @param target [Class] what you want the object to turn in to
     def coerce(object, target)
-      @mutex.synchronize do
-        coercions = @coercions[object.class]
-        key = coercions.keys.find { |k, _| k.ancestors.include?(target) }
-        coercions[key].call(object, key)
-      end
+      @coercions[object.class][target].call(object)
     end
   end
 end
