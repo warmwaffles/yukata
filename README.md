@@ -13,9 +13,13 @@ class Author < Yukata::Base
 end
 
 class Book < Yukata::Base
-  attribute :title,  String
-  attribute :author, Author
-  attribute :created_at, Date, default: -> { Date.today }
+  attribute :title,      String
+  attribute :author,     Author, coerce: false
+  attribute :created_at, Date,   default: -> { Date.today }, writer: false
+
+  def author=(value)
+    @author = Author.new(value.to_h)
+  end
 end
 
 book = Book.new({
